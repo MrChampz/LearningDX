@@ -1,0 +1,6 @@
+1. O vertex input layout funciona mesmo se não for definido em ordem, por que independente da posição
+delete no array, seu "socket" é definido assim como seu offset.
+
+2. A estrutura de vértice definida no shader, não precisa estar na mesma ordem da estrutura definida no código, 
+isso por que o vertex input layout mapeia cada membro da estrutura no código para um membro na estrutura do shader.
+Isso por meio das semantics (POSITION, NORMAL, TANGENT, BINORMAL, TEXCOORD0, TEXCOORD1, TEXCOORD2, ...).
