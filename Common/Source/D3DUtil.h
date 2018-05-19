@@ -21,6 +21,8 @@
 #include <cassert>
 #include "d3dx12.h"
 
+#include "GeometryGenerator.h"
+
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
