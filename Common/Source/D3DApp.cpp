@@ -245,7 +245,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_KEYUP:
-		if ((int)wParam == VK_ESCAPE)
+		if (wParam == VK_ESCAPE)
 		{
 			PostQuitMessage(0);
 		}

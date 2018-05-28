@@ -21,6 +21,7 @@ bool ShapesApp::Initialize()
 	// Reset the command list to prep for initialization commands.
 	ThrowIfFailed(m_CommandList->Reset(m_DirectCmdListAlloc.Get(), nullptr));
 
+	//BuildSkullGeometry();
 	BuildShapeGeometry();
 	BuildRenderItems();
 	BuildFrameResources();
@@ -118,6 +119,7 @@ void ShapesApp::Draw(const GameTimer& timer)
 	int passCbvIndex = m_PassCBVOffset + m_CurrFrameResourceIndex;
 	auto passCbvHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(m_CbvHeap->GetGPUDescriptorHandleForHeapStart());
 	passCbvHandle.Offset(passCbvIndex, m_CbvSrvUavDescriptorSize);
+
 	// Set the pass cbv in the slot #1.
 	m_CommandList->SetGraphicsRootDescriptorTable(1, passCbvHandle);
 
@@ -272,6 +274,57 @@ void ShapesApp::UpdateMainPassCB(const GameTimer& timer)
 	currPassCB->CopyData(0, m_MainPassCB);
 }
 
+void ShapesApp::BuildSkullGeometry()
+{
+	GeometryGenerator::MeshData skull = GeometryGenerator::LoadModel("skull.txt");
+
+	int vertexCount = skull.Vertices.size();
+	int indexCount = skull.Indices32.size();
+
+	std::vector<Vertex> vertices(vertexCount);
+	for (int i = 0; i < vertexCount; ++i)
+	{
+		Vertex vertex;
+		vertex.Pos = skull.Vertices[i].Position;
+		vertex.Color = XMFLOAT4(Colors::Chocolate);
+		vertices[i] = vertex;
+	}
+
+	std::vector<std::uint32_t> indices = skull.Indices32;
+
+	const UINT vbByteSize = (UINT)vertexCount * sizeof(Vertex);
+	const UINT ibByteSize = (UINT)indexCount * sizeof(std::int32_t);
+
+	SubMeshGeometry submesh;
+	submesh.IndexCount = (UINT)indexCount;
+	submesh.StartIndexLocation = 0;
+	submesh.BaseVertexLocation = 0;
+
+	auto geo = std::make_unique<MeshGeometry>();
+	geo->Name = "skullGeo";
+
+	ThrowIfFailed(D3DCreateBlob(vbByteSize, &geo->VertexBufferCPU));
+	CopyMemory(geo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize);
+
+	ThrowIfFailed(D3DCreateBlob(ibByteSize, &geo->IndexBufferCPU));
+	CopyMemory(geo->IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize);
+
+	geo->VertexBufferGPU = D3DUtil::CreateDefaultBuffer(m_d3dDevice.Get(),
+		m_CommandList.Get(), vertices.data(), vbByteSize, geo->VertexBufferUploader);
+
+	geo->IndexBufferGPU = D3DUtil::CreateDefaultBuffer(m_d3dDevice.Get(),
+		m_CommandList.Get(), indices.data(), ibByteSize, geo->IndexBufferUploader);
+
+	geo->VertexByteStride = sizeof(Vertex);
+	geo->VertexBufferByteSize = vbByteSize;
+	geo->IndexFormat = DXGI_FORMAT_R32_UINT;
+	geo->IndexBufferByteSize = ibByteSize;
+
+	geo->DrawArgs["skull"] = submesh;
+
+	m_Geometries[geo->Name] = std::move(geo);
+}
+
 void ShapesApp::BuildShapeGeometry()
 {
 	GeometryGenerator::MeshData box = GeometryGenerator::CreateBox(1.5f, 0.5f, 1.5f, 3);
@@ -395,6 +448,18 @@ void ShapesApp::BuildShapeGeometry()
 
 void ShapesApp::BuildRenderItems()
 {
+	/*
+	auto skullItem = std::make_unique<Renderable>();
+	skullItem->ObjCBIndex = 0;
+	skullItem->Geo = m_Geometries["skullGeo"].get();
+	skullItem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	skullItem->IndexCount = skullItem->Geo->DrawArgs["skull"].IndexCount;
+	skullItem->StartIndexLocation = skullItem->Geo->DrawArgs["skull"].StartIndexLocation;
+	skullItem->BaseVertexLocation = skullItem->Geo->DrawArgs["skull"].BaseVertexLocation;
+	XMStoreFloat4x4(&skullItem->World, XMMatrixTranslation(0.0f, -2.5f, 0.0f));
+	m_AllRenderables.push_back(std::move(skullItem));
+	*/
+
 	auto boxItem = std::make_unique<Renderable>();
 	boxItem->ObjCBIndex = 0;
 	boxItem->Geo = m_Geometries["shapeGeo"].get();

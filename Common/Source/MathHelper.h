@@ -14,6 +14,15 @@ public:
 	}
 
 public:
+	// Returns random float in [0, 1] range.
+	static float RandF();
+
+	// Returns random float in [a, b] range.
+	static float RandF(float a, float b);
+
+	// Returns random int in [a, b] range.
+	static int Rand(int a, int b);
+
 	static XMFLOAT4X4 Identity4x4();
 
 public:

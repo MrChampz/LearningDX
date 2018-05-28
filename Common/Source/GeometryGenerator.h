@@ -79,6 +79,8 @@ public:
 		std::vector<uint16> m_Indices16;
 	};
 
+	static MeshData LoadModel(std::string filename);
+
 	/// Creates a box centered at the origin with the given dimensions, where each
 	/// face has m rows and n columns of vertices.
 	static MeshData CreateBox(float width, float height, float depth, uint32 numSubdivisions);
@@ -86,6 +88,10 @@ public:
 	/// Creates a sphere centered at the origin with the given radius. The
 	/// slices and stacks parameters control the degree of tessellation.
 	static MeshData CreateSphere(float radius, uint32 sliceCount, uint32 stackCount);
+
+	/// Creates a geosphere centered at the origin with the given radius. The
+	/// depth controls the level of tessellation.
+	static MeshData CreateGeosphere(float radius, uint32 numSubdivisions);
 
 	/// Creates a cylinder parallel to the y-axis, and centered about the origin.
 	/// The bottom and top radius can vary to form various cone shapes rather than true
@@ -98,6 +104,7 @@ public:
 
 private:
 	static void Subdivide(MeshData& meshData);
+	static Vertex MidPoint(const Vertex& v0, const Vertex& v1);
 	static void BuildCylinderTopCap(float topRadius, float height, uint32 sliceCount, uint32 stackCount, MeshData& meshData);
 	static void BuildCylinderBottomCap(float bottomRadius, float height, uint32 sliceCount, uint32 stackCount, MeshData& meshData);
 };

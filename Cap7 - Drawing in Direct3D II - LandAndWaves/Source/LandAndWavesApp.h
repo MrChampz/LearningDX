@@ -6,6 +6,7 @@
 #include <UploadBuffer.h>
 #include <MathHelper.h>
 #include "FrameResource.h"
+#include "Waves.h"
 
 // Num of frame resources.
 const int g_NumFrameResources = 3;
@@ -42,13 +43,19 @@ struct Renderable
 	int  BaseVertexLocation = 0;
 };
 
-class ShapesApp : public D3DApp
+enum class RenderLayer : int
+{
+	Opaque = 0,
+	Count
+};
+
+class LandAndWavesApp : public D3DApp
 {
 public:
-	ShapesApp(HINSTANCE hInst);
-	ShapesApp(const ShapesApp& rhs) = delete;
-	ShapesApp& operator=(const ShapesApp& rhs) = delete;
-	~ShapesApp();
+	LandAndWavesApp(HINSTANCE hInst);
+	LandAndWavesApp(const LandAndWavesApp& rhs) = delete;
+	LandAndWavesApp& operator=(const LandAndWavesApp& rhs) = delete;
+	~LandAndWavesApp();
 
 	virtual bool Initialize() override;
 
@@ -66,15 +73,16 @@ private:
 	void UpdateCamera(const GameTimer& timer);
 	void UpdateObjectCBs(const GameTimer& timer);
 	void UpdateMainPassCB(const GameTimer& timer);
+	void UpdateWaves(const GameTimer& timer);
 
-	void BuildSkullGeometry();
-	void BuildShapeGeometry();
+	float GetHillsHeight(float x, float z) const;
+
+	void BuildLandGeometry();
+	void BuildWavesGeometryBuffers();
 	void BuildRenderItems();
 	void DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const std::vector<Renderable*>& renderables);
 	void BuildFrameResources();
 
-	void BuildDescriptorHeaps();
-	void BuildConstantBufferViews();
 	void BuildRootSignature();
 	void BuildShadersAndInputLayout();
 	void BuildPSOs();
@@ -84,15 +92,15 @@ private:
 	std::vector<std::unique_ptr<Renderable>> m_AllRenderables;
 
 	// Render items divided by PSO.
-	std::vector<Renderable*> m_OpaqueRenderables;
+	std::vector<Renderable*> m_RenderableLayer[(int)RenderLayer::Count];
+
+	// Wave render item.
+	Renderable* m_WavesRenderable = nullptr;
 
 	// Frame Resources.
 	std::vector<std::unique_ptr<FrameResource>> m_FrameResources;
 	FrameResource* m_CurrFrameResource = nullptr;
 	int m_CurrFrameResourceIndex = 0;
-
-	// Descriptor Heaps.
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_CbvHeap = nullptr;
 
 	// Root Signature.
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_RootSignature = nullptr;
@@ -107,8 +115,8 @@ private:
 	// Geometry (vertex/index buffers).
 	std::unordered_map<std::string, std::unique_ptr<MeshGeometry>> m_Geometries;
 
-	// Offset to pass cbv in the cbv heap.
-	UINT m_PassCBVOffset = 0;
+	// Waves
+	std::unique_ptr<Waves> m_Waves;
 
 	// Pass constant buffer.
 	PassConstants m_MainPassCB;
@@ -116,7 +124,7 @@ private:
 	// PSO state (solid/wireframe).
 	bool m_IsWireframe = false;
 
-	// Demo related members
+	// Demo related members.
 	XMFLOAT3   m_EyePos = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT4X4 m_View  = MathHelper::Identity4x4();
 	XMFLOAT4X4 m_Proj  = MathHelper::Identity4x4();

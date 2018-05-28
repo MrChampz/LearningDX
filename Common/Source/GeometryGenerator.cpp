@@ -1,6 +1,71 @@
 #include "GeometryGenerator.h"
 
 #include <algorithm>
+#include <fstream>
+
+GeometryGenerator::MeshData
+GeometryGenerator::LoadModel(std::string filename)
+{
+	MeshData meshData;
+	int vertexCount;
+	int triangleCount;
+
+	std::ifstream fin;
+	char input;
+
+	fin.open(filename);
+	if (fin.fail())
+	{
+		return meshData;
+	}
+
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+
+	fin >> vertexCount;
+	meshData.Vertices.resize(vertexCount);
+
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+
+	fin >> triangleCount;
+	meshData.Indices32.resize(triangleCount * 3);
+
+	fin.get(input);
+	while (input != '{')
+	{
+		fin.get(input);
+	}
+	fin.get(input);
+
+	for (int i = 0; i < vertexCount; i++)
+	{
+		fin >> meshData.Vertices[i].Position.x >> meshData.Vertices[i].Position.y >> meshData.Vertices[i].Position.z;
+		fin >> meshData.Vertices[i].Normal.x >> meshData.Vertices[i].Normal.y >> meshData.Vertices[i].Normal.z;
+	}
+
+	fin.get(input);
+	while (input != '{')
+	{
+		fin.get(input);
+	}
+	fin.get(input);
+
+	for (int i = 0; i < triangleCount; ++i)
+	{
+		fin >> meshData.Indices32[i * 3 + 0] >> meshData.Indices32[i * 3 + 1] >> meshData.Indices32[i * 3 + 2];
+	}
+
+	fin.close();
+
+	return meshData;
+}
 
 GeometryGenerator::MeshData
 GeometryGenerator::CreateBox(float width, float height, float depth, uint32 numSubdivisions)
@@ -322,6 +387,90 @@ GeometryGenerator::CreateSphere(float radius, uint32 sliceCount, uint32 stackCou
 }
 
 GeometryGenerator::MeshData
+GeometryGenerator::CreateGeosphere(float radius, uint32 numSubdivisions)
+{
+	MeshData meshData;
+
+	// Put a cap on the number of subdivisions.
+	numSubdivisions = std::min<uint32>(numSubdivisions, 6u);
+
+	//
+	// Approximate a sphere by tessellating an icosahedron.
+	//
+
+	const float x = 0.525731f;
+	const float z = 0.850651f;
+
+	XMFLOAT3 pos[12] =
+	{
+		XMFLOAT3(  -x, 0.0f,    z), XMFLOAT3(   x, 0.0f,    z),
+		XMFLOAT3(  -x, 0.0f,   -z), XMFLOAT3(   x, 0.0f,   -z),
+		XMFLOAT3(0.0f,    z,    x), XMFLOAT3(0.0f,    z,   -x),
+		XMFLOAT3(0.0f,   -z,    x), XMFLOAT3(0.0f,   -z,   -x),
+		XMFLOAT3(   z,    x, 0.0f), XMFLOAT3(   -z,   x, 0.0f),
+		XMFLOAT3(   z,   -x, 0.0f), XMFLOAT3(   -z,  -x, 0.0f)
+	};
+
+	uint32 k[60] =
+	{
+		 1,  4, 0,		 4, 9, 0,		4,  5, 9,		8, 5,  4,		 1, 8, 4,
+		 1, 10, 8,		10, 3, 8,		8,  3, 5,		3, 2,  5,	 	 3, 7, 2,
+		 3, 10, 7,		10, 6, 7,		6, 11, 7,		6, 0, 11,		 6, 1, 0,
+		10,  1, 6,		11, 0, 9,		2, 11, 9,		5, 2,  9,		11, 2, 7
+	};
+
+	meshData.Vertices.resize(12);
+	meshData.Indices32.assign(&k[0], &k[60]);
+
+	for (uint32 i = 0; i < 12; ++i)
+	{
+		meshData.Vertices[i].Position = pos[i];
+	}
+
+	for (uint32 i = 0; i < numSubdivisions; ++i)
+	{
+		Subdivide(meshData);
+	}
+
+	// Project vertices onto sphere and scale.
+	for (uint32 i = 0; i < meshData.Vertices.size(); ++i)
+	{
+		// Project onto unit sphere.
+		XMVECTOR n = XMVector3Normalize(XMLoadFloat3(&meshData.Vertices[i].Position));
+
+		// Project onto sphere.
+		XMVECTOR p = radius * n;
+
+		XMStoreFloat3(&meshData.Vertices[i].Position, p);
+		XMStoreFloat3(&meshData.Vertices[i].Normal, n);
+
+		// Derive texture coordinates from spherical coordinates.
+		float theta = atan2f(meshData.Vertices[i].Position.z, meshData.Vertices[i].Position.x);
+
+		// Put in [0, 2pi] range.
+		if (theta < 0.0f)
+		{
+			theta += XM_2PI;
+
+			float phi = acosf(meshData.Vertices[i].Position.y / radius);
+
+			meshData.Vertices[i].TexCoord.x = theta / XM_2PI;
+			meshData.Vertices[i].TexCoord.y = phi / XM_PI;
+
+			// Partial derivative of P with respect to theta.
+			meshData.Vertices[i].TangentU.x = -radius * sinf(phi) * sinf(theta);
+			meshData.Vertices[i].TangentU.y = 0.0f;
+			meshData.Vertices[i].TangentU.z = +radius * sinf(phi) * cosf(theta);
+
+			XMVECTOR T = XMLoadFloat3(&meshData.Vertices[i].TangentU);
+			XMStoreFloat3(&meshData.Vertices[i].TangentU, XMVector3Normalize(T));
+		}
+	}
+
+	return meshData;
+}
+
+GeometryGenerator::MeshData
 GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, float height, uint32 sliceCount, uint32 stackCount)
 {
 	MeshData meshData;
@@ -571,7 +720,94 @@ GeometryGenerator::CreateGrid(float width, float depth, uint32 m, uint32 n)
 
 void GeometryGenerator::Subdivide(MeshData& meshData)
 {
+	// Save a copy of the input geometry.
+	MeshData inputCopy = meshData;
 
+	meshData.Vertices.resize(0);
+	meshData.Indices32.resize(0);
+
+	//        v1
+	//        *
+	//       / \
+	//      /   \
+	//  m0 *-----* m1
+	//    / \   / \
+	//   /   \ /   \
+	//  *-----*-----*
+	// v0    m2     v2
+
+	uint32 numTris = (uint32)inputCopy.Indices32.size() / 3;
+	for (uint32 i = 0; i < numTris; ++i)
+	{
+		Vertex v0 = inputCopy.Vertices[ inputCopy.Indices32[i * 3 + 0] ];
+		Vertex v1 = inputCopy.Vertices[ inputCopy.Indices32[i * 3 + 1] ];
+		Vertex v2 = inputCopy.Vertices[ inputCopy.Indices32[i * 3 + 2] ];
+
+		//
+		// Generate the midpoints.
+		//
+
+		Vertex m0 = MidPoint(v0, v1);
+		Vertex m1 = MidPoint(v1, v2);
+		Vertex m2 = MidPoint(v0, v2);
+
+		//
+		// Add new geometry
+		//
+
+		meshData.Vertices.push_back(v0); // 0
+		meshData.Vertices.push_back(v1); // 1
+		meshData.Vertices.push_back(v2); // 2
+		meshData.Vertices.push_back(m0); // 3
+		meshData.Vertices.push_back(m1); // 4
+		meshData.Vertices.push_back(m2); // 5
+
+		meshData.Indices32.push_back(i * 6 + 0);
+		meshData.Indices32.push_back(i * 6 + 3);
+		meshData.Indices32.push_back(i * 6 + 5);
+
+		meshData.Indices32.push_back(i * 6 + 3);
+		meshData.Indices32.push_back(i * 6 + 4);
+		meshData.Indices32.push_back(i * 6 + 5);
+
+		meshData.Indices32.push_back(i * 6 + 5);
+		meshData.Indices32.push_back(i * 6 + 4);
+		meshData.Indices32.push_back(i * 6 + 2);
+
+		meshData.Indices32.push_back(i * 6 + 3);
+		meshData.Indices32.push_back(i * 6 + 1);
+		meshData.Indices32.push_back(i * 6 + 4);
+	}
+}
+
+GeometryGenerator::Vertex GeometryGenerator::MidPoint(const Vertex& v0, const Vertex& v1)
+{
+	XMVECTOR p0 = XMLoadFloat3(&v0.Position);
+	XMVECTOR p1 = XMLoadFloat3(&v1.Position);
+
+	XMVECTOR n0 = XMLoadFloat3(&v0.Normal);
+	XMVECTOR n1 = XMLoadFloat3(&v1.Normal);
+
+	XMVECTOR t0 = XMLoadFloat3(&v0.TangentU);
+	XMVECTOR t1 = XMLoadFloat3(&v1.TangentU);
+
+	XMVECTOR tex0 = XMLoadFloat2(&v0.TexCoord);
+	XMVECTOR tex1 = XMLoadFloat2(&v1.TexCoord);
+
+	// Compute the midpoints of all the attributes. Vectors need to be normalized
+	// since linear interpolating can make them not unit length.
+	XMVECTOR pos = 0.5f * (p0 + p1);
+	XMVECTOR normal = XMVector3Normalize(0.5f * (n0 + n1));
+	XMVECTOR tangent = XMVector3Normalize(0.5f * (t0 + t1));
+	XMVECTOR tex = 0.5f * (tex0 - tex1);
+
+	Vertex v;
+	XMStoreFloat3(&v.Position, pos);
+	XMStoreFloat3(&v.Normal, normal);
+	XMStoreFloat3(&v.TangentU, tangent);
+	XMStoreFloat2(&v.TexCoord, tex);
+
+	return v;
 }
 
 void GeometryGenerator::BuildCylinderTopCap(float topRadius, float height, uint32 sliceCount, uint32 stackCount, MeshData& meshData)
