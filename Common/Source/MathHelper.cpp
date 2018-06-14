@@ -18,6 +18,17 @@ int MathHelper::Rand(int a, int b)
 	return a + rand() % ((b - a) + 1);
 }
 
+XMVECTOR MathHelper::SphericalToCartesian(float radius, float theta, float phi)
+{
+	return XMVectorSet
+	(
+		radius * sinf(phi) * cosf(theta),
+		radius * cosf(phi),
+		radius * sinf(phi) * sinf(theta),
+		1.0f
+	);
+}
+
 XMFLOAT4X4 MathHelper::Identity4x4()
 {
 	static XMFLOAT4X4 I(

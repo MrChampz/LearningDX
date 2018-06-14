@@ -23,6 +23,8 @@ public:
 	// Returns random int in [a, b] range.
 	static int Rand(int a, int b);
 
+	static XMVECTOR SphericalToCartesian(float radius, float theta, float phi);
+
 	static XMFLOAT4X4 Identity4x4();
 
 public:

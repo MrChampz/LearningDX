@@ -25,6 +25,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cap7 - Drawing in Direct3D 
 		{C553DD90-2F1E-4AD3-A98D-F564F96172E0} = {C553DD90-2F1E-4AD3-A98D-F564F96172E0}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cap8 - Lighting", "Cap8 - Lighting\Cap8 - Lighting.vcxproj", "{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C553DD90-2F1E-4AD3-A98D-F564F96172E0} = {C553DD90-2F1E-4AD3-A98D-F564F96172E0}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -73,6 +78,14 @@ Global
 		{C7F2C989-8B27-4B5A-83C2-803C39FFF9AF}.Release|x64.Build.0 = Release|x64
 		{C7F2C989-8B27-4B5A-83C2-803C39FFF9AF}.Release|x86.ActiveCfg = Release|Win32
 		{C7F2C989-8B27-4B5A-83C2-803C39FFF9AF}.Release|x86.Build.0 = Release|Win32
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Debug|x64.ActiveCfg = Debug|x64
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Debug|x64.Build.0 = Debug|x64
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Debug|x86.ActiveCfg = Debug|Win32
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Debug|x86.Build.0 = Debug|Win32
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Release|x64.ActiveCfg = Release|x64
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Release|x64.Build.0 = Release|x64
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Release|x86.ActiveCfg = Release|Win32
+		{11D30F21-1DD4-4715-B1D4-4FD249BB5A27}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

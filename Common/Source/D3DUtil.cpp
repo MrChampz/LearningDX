@@ -18,7 +18,7 @@ UINT D3DUtil::CalcConstantBufferByteSize(UINT byteSize)
 	return (byteSize + 255) & ~255;
 }
 
-Microsoft::WRL::ComPtr<ID3DBlob> D3DUtil::LoadBinary(const std::wstring & filename)
+Microsoft::WRL::ComPtr<ID3DBlob> D3DUtil::LoadBinary(const std::wstring& filename)
 {
 	std::ifstream fin(filename, std::ios::binary);
 
