@@ -222,8 +222,9 @@ void BoxApp::BuildShadersAndInputLayout()
 {
 	HRESULT result = S_OK;
 
-	m_vsByteCode = D3DUtil::LoadBinary(L"Shaders/Color_VS.cso");
-	m_psByteCode = D3DUtil::LoadBinary(L"Shaders/Color_PS.cso");
+	std::wstring projectName = PROJ_NAME;
+	m_vsByteCode = D3DUtil::LoadBinary(L"Shaders/" + projectName + L"/Color_VS.cso");
+	m_psByteCode = D3DUtil::LoadBinary(L"Shaders/" + projectName + L"/Color_PS.cso");
 
 	m_InputLayout =
 	{

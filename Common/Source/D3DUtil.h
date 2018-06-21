@@ -22,6 +22,7 @@
 #include "d3dx12.h"
 #include "MathHelper.h"
 #include "GeometryGenerator.h"
+#include "DDSTextureLoader.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -172,6 +173,17 @@ struct Material
 	XMFLOAT3 FresnelR0 = { 0.01f, 0.01f, 0.01f };
 	float Roughness = 0.25f;
 	XMFLOAT4X4 MatTransform = MathHelper::Identity4x4();
+};
+
+struct Texture
+{
+	// Unique material name for lookup.
+	std::string Name;
+
+	std::wstring Filename;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> UploadHeap = nullptr;
 };
 
 #ifndef ThrowIfFailed

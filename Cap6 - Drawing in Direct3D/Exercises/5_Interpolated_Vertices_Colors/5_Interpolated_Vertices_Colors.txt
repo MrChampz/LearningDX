@@ -1,4 +1,0 @@
-Cada vértice tem uma cor, e a cor entre os vértices, é o resultado da interpolação da cor de um vértice com a de outro.
-Essa interpolação é feita no Pixel Shader. Após passar pelo Vertex Shader e pelos estágios subsequentes, o vértice é então
-processado pelo Rasterizer, que transforma a área da geometria em uma série de "fragmentos", esses fragmentos são então passados
-para o Pixel Shader, que faz a interpolação da cor dos fragmentos, de acordo com os vértices.

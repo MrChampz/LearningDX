@@ -276,7 +276,7 @@ void ShapesApp::UpdateMainPassCB(const GameTimer& timer)
 
 void ShapesApp::BuildSkullGeometry()
 {
-	GeometryGenerator::MeshData skull = GeometryGenerator::LoadModel("skull.txt");
+	GeometryGenerator::MeshData skull = GeometryGenerator::LoadModel("Models/skull.txt");
 
 	int vertexCount = skull.Vertices.size();
 	int indexCount = skull.Indices32.size();
@@ -692,8 +692,9 @@ void ShapesApp::BuildRootSignature()
 
 void ShapesApp::BuildShadersAndInputLayout()                       
 {
-	m_Shaders["StandardVS"] = D3DUtil::LoadBinary(L"Shaders/Standard_VS.cso");
-	m_Shaders["OpaquePS"] = D3DUtil::LoadBinary(L"Shaders/Opaque_PS.cso");
+	std::wstring projectName = PROJ_NAME;
+	m_Shaders["StandardVS"] = D3DUtil::LoadBinary(L"Shaders/" + projectName + L"/Standard_VS.cso");
+	m_Shaders["OpaquePS"] = D3DUtil::LoadBinary(L"Shaders/" + projectName + L"/Opaque_PS.cso");
 
 	m_InputLayout =
 	{

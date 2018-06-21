@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Source\D3DApp.h" />
     <ClInclude Include="Source\D3DUtil.h" />
+    <ClInclude Include="Source\DDSTextureLoader.h" />
     <ClInclude Include="Source\GameTimer.h" />
     <ClInclude Include="Source\GeometryGenerator.h" />
     <ClInclude Include="Source\MathHelper.h" />
@@ -148,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="Source\D3DApp.cpp" />
     <ClCompile Include="Source\D3DUtil.cpp" />
+    <ClCompile Include="Source\DDSTextureLoader.cpp" />
     <ClCompile Include="Source\GameTimer.cpp" />
     <ClCompile Include="Source\GeometryGenerator.cpp" />
     <ClCompile Include="Source\MathHelper.cpp" />

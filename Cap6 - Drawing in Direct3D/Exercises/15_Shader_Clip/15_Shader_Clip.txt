@@ -1,2 +1,0 @@
-A função clip() faz com que a geometria seja "cortada" do processo de rasterização (transformação da área entre 
-os vértices em fragmentos, a partir da interpolação).

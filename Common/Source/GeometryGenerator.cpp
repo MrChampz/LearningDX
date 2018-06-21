@@ -799,7 +799,7 @@ GeometryGenerator::Vertex GeometryGenerator::MidPoint(const Vertex& v0, const Ve
 	XMVECTOR pos = 0.5f * (p0 + p1);
 	XMVECTOR normal = XMVector3Normalize(0.5f * (n0 + n1));
 	XMVECTOR tangent = XMVector3Normalize(0.5f * (t0 + t1));
-	XMVECTOR tex = 0.5f * (tex0 - tex1);
+	XMVECTOR tex = 0.5f * (tex0 + tex1);
 
 	Vertex v;
 	XMStoreFloat3(&v.Position, pos);

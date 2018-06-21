@@ -602,8 +602,9 @@ void LitWavesApp::BuildRootSignature()
 
 void LitWavesApp::BuildShadersAndInputLayout()                       
 {
-	m_Shaders["StandardVS"] = D3DUtil::LoadBinary(L"Shaders/Standard_VS.cso");
-	m_Shaders["OpaquePS"] = D3DUtil::LoadBinary(L"Shaders/Opaque_PS.cso");
+	std::wstring projectName = PROJ_NAME;
+	m_Shaders["StandardVS"] = D3DUtil::LoadBinary(L"Shaders/" + projectName + L"/Standard_VS.cso");
+	m_Shaders["OpaquePS"] = D3DUtil::LoadBinary(L"Shaders/" + projectName + L"/Opaque_PS.cso");
 
 	m_InputLayout =
 	{
