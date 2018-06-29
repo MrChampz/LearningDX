@@ -1,0 +1,3 @@
+Quando a água é renderizada primeiro, ela deixa de ser transparente, pois seus pixels rasterizados misturam-se
+com os pixels já presentes no back-buffer, no caso nenhum, já que é o primeiro "objeto" a ser renderizado, e é
+por isso que o efeito de transparência se perde.

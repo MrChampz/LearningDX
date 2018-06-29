@@ -42,6 +42,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cap9 - Texturing - Shapes",
 		{C553DD90-2F1E-4AD3-A98D-F564F96172E0} = {C553DD90-2F1E-4AD3-A98D-F564F96172E0}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cap10 - Blending", "Cap10 - Blending\Cap10 - Blending.vcxproj", "{5048697F-D6C5-43AE-AD53-C25AC54228E9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C553DD90-2F1E-4AD3-A98D-F564F96172E0} = {C553DD90-2F1E-4AD3-A98D-F564F96172E0}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -122,6 +127,14 @@ Global
 		{46D29D7B-B062-4D30-AA9A-2F72EBA96A54}.Release|x64.Build.0 = Release|x64
 		{46D29D7B-B062-4D30-AA9A-2F72EBA96A54}.Release|x86.ActiveCfg = Release|Win32
 		{46D29D7B-B062-4D30-AA9A-2F72EBA96A54}.Release|x86.Build.0 = Release|Win32
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Debug|x64.ActiveCfg = Debug|x64
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Debug|x64.Build.0 = Debug|x64
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Debug|x86.ActiveCfg = Debug|Win32
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Debug|x86.Build.0 = Debug|Win32
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Release|x64.ActiveCfg = Release|x64
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Release|x64.Build.0 = Release|x64
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Release|x86.ActiveCfg = Release|Win32
+		{5048697F-D6C5-43AE-AD53-C25AC54228E9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,8 +12,14 @@
 // Include structures and functions for lighting.
 #include "LightingUtil.hlsli"
 
-Texture2D	 gDiffuseMap    : register(t0);
-SamplerState gSamplerLinear : register(s4);
+Texture2D gDiffuseMap : register(t0);
+
+SamplerState gSamplerPointWrap        : register(s0);
+SamplerState gSamplerPointClamp       : register(s1);
+SamplerState gSamplerLinearWrap       : register(s2);
+SamplerState gSamplerLinearClamp	  : register(s3);
+SamplerState gSamplerAnisotropicWrap  : register(s4);
+SamplerState gSamplerAnisotropicClamp : register(s5);
 
 cbuffer cbMaterial : register(b1)
 {
@@ -59,7 +65,7 @@ struct PixelIn
 
 float4 PS(PixelIn pin) : SV_TARGET
 {
-	float4 diffuseAlbedo = gDiffuseMap.Sample(gSamplerLinear, pin.TexCoord) * gDiffuseAlbedo;
+	float4 diffuseAlbedo = gDiffuseMap.Sample(gSamplerAnisotropicClamp, pin.TexCoord) * gDiffuseAlbedo;
 
 	// Interpolating normal can unnormalize it, so renormalize it.
 	pin.NormalW = normalize(pin.NormalW);

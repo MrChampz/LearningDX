@@ -1,0 +1,23 @@
+1. dist(p, E) = 160
+
+	= saturate((160 - 10) / 200)
+	= saturate(0,75)
+	= 0,75
+
+2. dist(p, E) = 110
+
+	= saturate((110 - 10) / 200)
+	= saturate(0,50)
+	= 0,50
+
+3. dist(p, E) = 60
+
+	= saturate((60 - 10) / 200)
+	= saturate(0,25)
+	= 0,25
+
+4. dist(p, E) = 30
+
+	= saturate((30 - 10) / 200)
+	= saturate(0,10)
+	= 0,10
