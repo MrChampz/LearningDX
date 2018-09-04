@@ -1,0 +1,23 @@
+* Bernstein basis functions for quadratic Bézier curve:
+
+  B0^2(t) = (2!/0!(2-0)!)t^0(1-t)^(2-0) = (1-t)^2
+  B1^2(t) = (2!/1!(2-1)!)t^1(1-t)^(2-1) = 2t(1-t)
+  B2^2(t) = (2!/2!(2-2)!)t^2(1-t)^(2-2) = t^2
+
+* Derivatives:
+
+  B0^2'(t) = -2(1-t)
+  B1^2'(t) = 2-4t
+  B2^2'(t) = 2t
+
+* Derivative parametric function for quadratic Bézier surface:
+
+  q0(u) = B0^2(u)P00 + B1^2(u)P01 + B2^2(u)P02
+  q1(u) = B0^2(u)P10 + B1^2(u)P11 + B2^2(u)P12
+  q2(u) = B0^2(u)P20 + B1^2(u)P21 + B2^2(u)P22
+
+  P(u,v) = B0^2(v)q0(u) + B1^2(v)q1(u) + B2^2(v)q2(u)
+
+  = B0^2(v)[B0^2(u)P00 + B1^2(u)P01 + B2^2(u)P02]
+  + B1^2(v)[B0^2(u)P10 + B1^2(u)P11 + B2^2(u)P12]
+  + B2^2(v)[B0^2(u)P20 + B1^2(u)P21 + B2^2(u)P22]
