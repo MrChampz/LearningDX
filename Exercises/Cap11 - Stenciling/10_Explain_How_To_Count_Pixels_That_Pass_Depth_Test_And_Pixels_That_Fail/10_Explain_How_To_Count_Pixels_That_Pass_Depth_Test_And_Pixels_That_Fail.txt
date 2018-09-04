@@ -1,0 +1,8 @@
+Usando o depth complexity, armazenado no stencil buffer. A cada
+iteração do stencil buffer, é incrementadoem 1 o valor dos pixels.
+Desta forma, se um pixel é renderizado 3 vezes, ele terá o depth
+complexity de 3. Usando o depth complexity de cada pixel, é possivel
+renderizar cada nível de depth complexity de uma cor diferente. O 
+pixel que passa pelo depth test é aquele que é renderizado por último,
+ou seja, tem o depth complexity maior. Os que falham são os que tem o
+depth complexity menor.

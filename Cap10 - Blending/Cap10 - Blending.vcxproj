@@ -71,25 +71,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)Common\Source;$(SolutionDir)Dependencies\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)Common\Source;$(SolutionDir)Dependencies\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)Common\Source;$(SolutionDir)Dependencies\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)Common\Source;$(SolutionDir)Dependencies\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -145,6 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>PROJ_NAME=L"$(ProjectName)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -1,0 +1,6 @@
+E agora, a parede oculta a caveira?
+
+Sim, a parede e a caveira foram renderizadas com o Depth Test habilitado,
+porém como a caveira está posicionada atrás da parede, seus pixels são
+sobrepostos pelos da parede, essa que passa no Depth Test, já que está mais
+próxima do "visualizador".

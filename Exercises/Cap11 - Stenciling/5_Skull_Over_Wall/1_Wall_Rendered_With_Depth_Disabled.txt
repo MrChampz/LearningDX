@@ -1,0 +1,5 @@
+A parede oculta a caveira?
+
+Não, a parede foi renderizada com o Depth Test desabilitado, já a
+caveira foi renderizada com ele habilitado. Por isso que ela foi
+renderizada sobre a parede, mesmo estando atrás dela.

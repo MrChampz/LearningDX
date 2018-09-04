@@ -1,0 +1,32 @@
+Let p = (p1, p2, p3). For i <1, 2, 3>, the ith component of S = p * Spoint
+is given by:
+
+  Si' = (n * L + d)pi - Li(n * p + d)
+      = pi * n * L + pi * d - Li(n * p + d)
+      = pi * n * L + pi * d + (pi * n * p - pi * n * p) - Li(n * p + d)
+      = pi * n * L - pi * n * p + pi(n * p + d) - Li(n * p + d)
+      = pi * n(L - p) + pi(n * p + d) - Li(n * p + d)
+      = -pi * n(p - L) + (pi - Li)(n * p + d)
+
+And the fourth component is given by:
+
+   S4' = -nx * px - ny * py - nz * pz + n * L
+       = -n * p + n * L
+       = -n(p - L)
+
+Doing the homogeneous divide we obtain:
+
+   Si'' =  -pi * n(p - L) + (pi - Li)(n * p + d)
+          ---------------------------------------
+                        -n(p - L)
+
+                n * p + d
+        = pi - ----------- (pi - Li)
+                n(p - L)
+
+                                                  n * p + d
+But this is exactly the ith component of S = p - ----------- (p - L), so
+                                                  n(p - L)
+            n * p + d
+   S = p - ----------- (p - L) = p * Spoint
+            n(p - L)

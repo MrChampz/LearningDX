@@ -451,27 +451,28 @@ GeometryGenerator::CreateGeosphere(float radius, uint32 numSubdivisions)
 		if (theta < 0.0f)
 		{
 			theta += XM_2PI;
-
-			float phi = acosf(meshData.Vertices[i].Position.y / radius);
-
-			meshData.Vertices[i].TexCoord.x = theta / XM_2PI;
-			meshData.Vertices[i].TexCoord.y = phi / XM_PI;
-
-			// Partial derivative of P with respect to theta.
-			meshData.Vertices[i].TangentU.x = -radius * sinf(phi) * sinf(theta);
-			meshData.Vertices[i].TangentU.y = 0.0f;
-			meshData.Vertices[i].TangentU.z = +radius * sinf(phi) * cosf(theta);
-
-			XMVECTOR T = XMLoadFloat3(&meshData.Vertices[i].TangentU);
-			XMStoreFloat3(&meshData.Vertices[i].TangentU, XMVector3Normalize(T));
 		}
+
+		float phi = acosf(meshData.Vertices[i].Position.y / radius);
+
+		meshData.Vertices[i].TexCoord.x = theta / XM_2PI;
+		meshData.Vertices[i].TexCoord.y = phi / XM_PI;
+
+		// Partial derivative of P with respect to theta.
+		meshData.Vertices[i].TangentU.x = -radius * sinf(phi) * sinf(theta);
+		meshData.Vertices[i].TangentU.y = 0.0f;
+		meshData.Vertices[i].TangentU.z = +radius * sinf(phi) * cosf(theta);
+
+		XMVECTOR T = XMLoadFloat3(&meshData.Vertices[i].TangentU);
+		XMStoreFloat3(&meshData.Vertices[i].TangentU, XMVector3Normalize(T));
 	}
 
 	return meshData;
 }
 
 GeometryGenerator::MeshData
-GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, float height, uint32 sliceCount, uint32 stackCount)
+GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, float height,
+	uint32 sliceCount, uint32 stackCount, bool bottomCap, bool topCap)
 {
 	MeshData meshData;
 
@@ -646,8 +647,11 @@ GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, float hei
 		}
 	}
 
-	BuildCylinderTopCap(topRadius, height, sliceCount, stackCount, meshData);
-	BuildCylinderBottomCap(bottomRadius, height, sliceCount, stackCount, meshData);
+	if (topCap)
+		BuildCylinderTopCap(topRadius, height, sliceCount, stackCount, meshData);
+
+	if (bottomCap)
+		BuildCylinderBottomCap(bottomRadius, height, sliceCount, stackCount, meshData);
 
 	return meshData;
 }

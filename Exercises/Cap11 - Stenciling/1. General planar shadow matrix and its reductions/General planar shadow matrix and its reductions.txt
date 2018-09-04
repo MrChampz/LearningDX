@@ -1,0 +1,79 @@
+
+General planar shadow matrix:
+
+   |n * L + d * Lw - Lx * nx         -Ly * nx                  -Lz * nx          -Lw * nx|
+   |       -Lx * ny           n * L + d * Lw -Ly * ny          -Lz * ny          -Lw * ny|
+   |       -Lx * nz                  -Ly * nz           n * L + d * Lw -Lz * nz  -Lw * nz|
+   |       -Lx * d                   -Ly * d                   -Lz * d             n * L |
+
+It can be applied to a vertex to project it on the shadow plane.
+If the light vector (L) has w-component 0, the matrix projects to a directional
+light, if w-component is 1, then matrix projects to a point light.
+
+   Si =  (n * L + d * Lw)pi - Li * nx * px - Li * ny * py - Li * nz * pz - Li * d
+        --------------------------------------------------------------------------
+                  -Lw * nx * px - Lw * ny * py - Lw * nz * pz + n * L
+
+      =  (n * L + d * Lw)pi - Li(n * p + d)
+        ------------------------------------
+                  -Lw(n * p) + n * L
+
+If Lw = 0 (directional light), then the equation reduces to S = Sdir:
+
+   Si =  (n * L + d * 0)pi - Li(n * p + d)
+        ------------------------------------
+                -0(n * p) + n * L
+
+      =  (n * L)pi - Li(n * p + d)
+        ---------------------------
+                  n * L
+
+              n * p + d
+      = pi - ----------- Li
+                n * L
+
+But this is exactly the ith component of S, so S is:
+
+            n * p + d
+   S = p - ----------- L = Sdir
+              n * L
+
+If Lw = 1 (point light), then the equation reduces to S = Spoint:
+
+   Si =  (n * L + d * 1)pi - Li(n * p + d)
+        ------------------------------------
+                -1(n * p) + n * L
+
+      =  (n * L + d)pi - Li(n * p + d)
+        -------------------------------
+                -n * p + n * L
+
+         pi * n * L + pi * d - Li(n * p +d)
+      = ------------------------------------
+                     -n(p - L)
+
+         pi * n * L + pi * d + (pi * n * p - pi * n * p) - Li(n * p + d)
+      = -----------------------------------------------------------------
+                                   -n(p - L)
+
+         pi * n * L - pi * n * p + pi(n * p + d) - Li(n * p + d)
+      = ---------------------------------------------------------
+                               -n(p - L)
+
+         pi * n(L - p) + pi(n * p + d) - Li(n * p + d)
+      = -----------------------------------------------
+                          -n(p - L)
+
+         -pi * n(p - L) + (pi - Li)(n * p + d)
+      = ---------------------------------------
+                      -n(p - L)
+
+              n * p + d
+      = pi - ----------- (pi - Li)
+              n(p - L)
+
+But this is exactly the ith component of S, so S is:
+
+            n * p + d
+   S = p - ----------- (p - L) = Spoint
+            n(p - L)

@@ -96,7 +96,8 @@ public:
 	/// Creates a cylinder parallel to the y-axis, and centered about the origin.
 	/// The bottom and top radius can vary to form various cone shapes rather than true
 	/// cylinders. The slice and stacks parameters control the degree of tessellation.
-	static MeshData CreateCylinder(float bottomRadius, float topRadius, float height, uint32 sliceCount, uint32 stackCount);
+	static MeshData CreateCylinder(float bottomRadius, float topRadius, float height,
+		uint32 sliceCount, uint32 stackCount, bool bottomCap = true, bool topCap = true);
 
 	/// Creates an m x n grid in the xz-plane with m rows and n columns, centered
 	/// at the origin with the specified width and depth.
