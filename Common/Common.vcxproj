@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\D3DApp.h" />
     <ClInclude Include="Source\D3DUtil.h" />
     <ClInclude Include="Source\DDSTextureLoader.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Source\UploadBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\D3DApp.cpp" />
     <ClCompile Include="Source\D3DUtil.cpp" />
     <ClCompile Include="Source\DDSTextureLoader.cpp" />

@@ -73,6 +73,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cap14 - The Tessellation St
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cap14 - The Tessellation Stages - BezierPatch", "Cap14 - The Tessellation Stages - BezierPatch\Cap14 - The Tessellation Stages - BezierPatch.vcxproj", "{25CB9D1A-76C2-4BEA-A47A-2645367CDEAB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cap15 - Dynamic Indexing", "Cap15 - Dynamic Indexing\Cap15 - Dynamic Indexing.vcxproj", "{F69C6E99-3159-4CAE-BB4A-586917815095}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C553DD90-2F1E-4AD3-A98D-F564F96172E0} = {C553DD90-2F1E-4AD3-A98D-F564F96172E0}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -209,6 +214,14 @@ Global
 		{25CB9D1A-76C2-4BEA-A47A-2645367CDEAB}.Release|x64.Build.0 = Release|x64
 		{25CB9D1A-76C2-4BEA-A47A-2645367CDEAB}.Release|x86.ActiveCfg = Release|Win32
 		{25CB9D1A-76C2-4BEA-A47A-2645367CDEAB}.Release|x86.Build.0 = Release|Win32
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Debug|x64.ActiveCfg = Debug|x64
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Debug|x64.Build.0 = Debug|x64
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Debug|x86.ActiveCfg = Debug|Win32
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Debug|x86.Build.0 = Debug|Win32
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Release|x64.ActiveCfg = Release|x64
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Release|x64.Build.0 = Release|x64
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Release|x86.ActiveCfg = Release|Win32
+		{F69C6E99-3159-4CAE-BB4A-586917815095}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

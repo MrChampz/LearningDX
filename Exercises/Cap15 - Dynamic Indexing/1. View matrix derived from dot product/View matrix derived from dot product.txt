@@ -1,0 +1,49 @@
+1. Given the world space axes and origin in world coordinates:
+
+i = (1, 0, 0)
+j = (0, 1, 0)
+k = (0, 0, 1)
+O = (0, 0, 0)
+
+and the view space axes and origin in world coordinates:
+
+U = (Ux, Uy, Uz)
+V = (Vx, Vy, Vz)
+W = (Wx, Wy, Wz)
+Q = (Qx, Qy, Qz)
+
+derive the view matrix form:
+
+       |   Ux       Vx       Wx     0 |
+Vmat = |   Uy       Vy       Wy     0 |
+       |   Uz       Vz       Wz     0 |
+       | -Q * U   -Q * V   -Q * W   1 |
+
+using the dot product. (Remember, to find the change of
+coordinate matrix from world space to view space, you just
+need to describe the world space axes and origin with
+coordinates relative to view space. Then these coordinates
+become the rows of the view matrix.)
+
+* All the given vectors have coordinates in world space,
+* and all the axis vectors are unit vectors. 
+
+[I]v = [I * U   I * V   I * W]
+     = [Ux   Vx   Wx]
+
+[J]v = [J * U   J * V   J * W]
+     = [Uy   Vy   Wy]
+
+[K]v = [K * U   K * V   K * W]
+     = [Uz   Vz   Wz]
+
+[O]v = [(O - Q) * U   (O - Q) * V   (O - Q) * W]
+     = [-Q * U   -Q * V   -Q * W]
+
+Augmenting to homogeneous coordinates and putting these
+vectors into the rows of a matrix yields the view matrix.
+
+       | I |   |   Ux       Vx       Wx     0 |
+Vmat = | J | = |   Uy       Vy       Wy     0 |
+       | K |   |   Uz       Vz       Wz     0 |
+       | Q |   | -Q * U   -Q * V   -Q * W   1 |
